@@ -1,23 +1,18 @@
 import React, {useEffect, useState} from "react";
 import { Text, StyleSheet, View, KeyboardAvoidingView, Platform, Image } from "react-native";
-import { Bots } from "../../BotConfigs";
+import { Configuration, OpenAIApi } from "openai";
 import Header from "./header";
+import NewChat from "./ChatFlatlist";
 
-import ChatFlatlist from "./chatflatlist";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { Bots } from "../../BotConfigs";
 
-type ParamList = {
-    Detail: {
-      text: string,
-        type: string,
-    };
-  };
 
-export default function Chat() {
+export default function Home() {
     const ImageUrl = Bots.ChatBot.avatar
     const name = Bots.ChatBot.name
-    const route = useRoute<RouteProp<ParamList, 'Detail'>>()
-   
+
+    
+  
     return <>
     <KeyboardAvoidingView style={styles.screen}
         
@@ -25,7 +20,9 @@ export default function Chat() {
        
       <Header nameUrl={name} imageUrl={ImageUrl}/>
   <View style={styles.screen}>
-      <ChatFlatlist nameUrl={name} imageUrl={ImageUrl} type={route.params.type} FirstPrompt={route.params.text}/>
+    
+        <NewChat />
+      
       </View>
       
        </KeyboardAvoidingView>

@@ -64,7 +64,7 @@ function handleSignIn(data: Data) {
         setInputGenerating(false)
         const resultado = await Api({prompt: prompt})
         const Text = resultado.choices[0].text
-        
+      
         
 
         const id = guid();
@@ -103,7 +103,7 @@ function handleSignIn(data: Data) {
     }
     
     getOpenAiResponse()
-    flatlistRef.current?.scrollToEnd({animated: true})
+  
 }
      
   
@@ -137,7 +137,9 @@ function handleSignIn(data: Data) {
 
                     
 
-                    <TouchableOpacity style={styles.sendButton} onPress={(e) => {
+                    <TouchableOpacity
+                    disabled={!InputGenerating}
+                     style={[styles.sendButton, { opacity: InputGenerating == true? 1: 0.2}]} onPress={(e) => {
                         const submit = () => {
                             {;handleSubmit(handleSignIn)(e);}
                         }

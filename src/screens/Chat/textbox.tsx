@@ -28,7 +28,7 @@ export default function TextBox({userName, user_id, text, date, avatar, messageI
     const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
     const [TabBlock, setTabBlock] = useState<boolean>(false)
 
-   console.log(text)
+ 
 
   
     useEffect(() => {

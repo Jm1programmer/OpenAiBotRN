@@ -2,7 +2,7 @@
 import { Configuration, OpenAIApi } from "openai";
 const configuration = new Configuration({
     organization: "org-2uiYiQfNuciBGNdKVMPeduk7",
-    apiKey: "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"
+    apiKey: "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"
 });
 const openai = new OpenAIApi(configuration);
 
@@ -19,7 +19,7 @@ export  async function Api({prompt} : props ) {
         max_tokens: 2048,
         temperature: 0,
     })
-    
+    console.log(response.data)
     return response.data;
 
 }

@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { propsStack } from "../Stack/models";
 import { useState } from "react";
-import Icon from 'react-native-vector-icons/Feather'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 type MessagesProps = {
     nameUrl: string,
@@ -23,26 +23,22 @@ export default function Header({nameUrl, imageUrl} : MessagesProps) {
     return <>
 
     <View style={styles.Header}>
-        <TouchableOpacity onPress={() => {
-            navigation.goBack()
-        }}>
-        <Icon name={'arrow-left-circle'} size={35} color={COLORS.background.black} />
-        </TouchableOpacity>
-   
-    <View style={{alignSelf: 'center', justifyContent: 'center'}}>
+      
+    
     <TouchableOpacity style={styles.ContactBox} onPress={() => {
         
     }}>
-        <View style={styles.profilePictureView}>
-       
-        <Image style={styles.profilePicture} source={{uri: imageUrl}} resizeMode="cover" />
-        </View>
+        
         <View style={styles.info} >
-            <Text style={styles.name}>{nameUrl}</Text>
-            <Text style={styles.InfoText}>･Online</Text>
+            <Text style={styles.name}>{`Aguiar ${nameUrl}`}</Text>
+            <View style={styles.InfoTextView}>
+            <Text style={styles.InfoText}>made with</Text>
+            <Text style={[styles.InfoText, styles.InfoTextBold]}>OpenAi</Text>
+            </View>
+            
         </View>
         </TouchableOpacity>
-        </View>
+
       
 
     
@@ -50,9 +46,7 @@ export default function Header({nameUrl, imageUrl} : MessagesProps) {
     </View>
 
 
-    <View style={{   borderColor: COLORS.TextBoxGray,
-          borderWidth: 1,
-       borderRadius: 5,}}/>
+
        
     </>
 }
@@ -64,16 +58,13 @@ const styles = StyleSheet.create({
            
        flexDirection: 'row',
        alignItems: 'center',
-       
+       justifyContent: 'flex-start',
        padding: 10,
         },
     ContactBox: {
     
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingHorizontal: 90,
-   
+        alignItems: 'center'
     },
 
     profilePictureView: {
@@ -98,11 +89,21 @@ const styles = StyleSheet.create({
         fontWeight: '500'
   
     },
+    InfoTextView: {
+        flexDirection: 'row',
+        
+    },
     InfoText: {
         fontSize: 15,
-        color: COLORS.green,
-        fontWeight: '900'
+        color: COLORS.gray,
+        fontWeight: '400'
        
+    },
+    InfoTextBold: {
+        fontWeight: '300',
+        marginHorizontal: 2,
+        color: COLORS.background.black,
+        fontSize: 16,
     }
     
 })
