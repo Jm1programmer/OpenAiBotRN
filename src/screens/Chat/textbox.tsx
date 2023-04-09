@@ -2,8 +2,8 @@ import { useState, useEffect, JSXElementConstructor } from "react";
 import { Text,View, StyleSheet, TouchableOpacity, Alert, Image} from "react-native";
 import { COLORS } from "../../colors";
 
-import Icon from 'react-native-vector-icons/Foundation'
-
+import Icon from 'react-native-vector-icons/Ionicons'
+import Clipboard from '@react-native-clipboard/clipboard';
 import moment from 'moment'
 
 
@@ -15,18 +15,20 @@ type MessagesProps = {
     date: string;
     messageId: string,
     avatar: string;
-    id: string
+    id: string,
+    generating: boolean
   
   };
 
-export default function TextBox({userName, user_id, text, date, avatar, messageId, }: MessagesProps) {
+export default function TextBox({userName, user_id, text, date, avatar, messageId, generating }: MessagesProps) {
  
    
-    const [user_uid, setUser_uid] = useState<String>()
-    const [deleteIcon, setdeleteIcon] = useState<boolean>(true)
+   
     const [MessageDate, setMessageDate] = useState<Date>(new Date())
     const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
     const [TabBlock, setTabBlock] = useState<boolean>(false)
+    const [copied, setCopied] = useState<boolean>(false)
+    const [Generating, setGenerating] = useState<boolean>(generating)
 
  
 
@@ -41,13 +43,19 @@ export default function TextBox({userName, user_id, text, date, avatar, messageI
  
  
     
-   
- 
+    const copyToClipboard = () => {
+        Clipboard.setString(text);
+        setCopied(true)
+      };
+ //  <Image source={{uri: 'https://thumbs.gfycat.com/GrippingReflectingBasenji-max-1mb.gif'}} style={{height: 30}} />
 
     return <>
 
 
-    <View style={[styles.TextBox, { justifyContent:  user_id === messageId ? 'flex-end' : 'flex-start'}]} >
+
+    <View style={[styles.TextBox, { justifyContent:  user_id === messageId ? 'flex-end' : 'flex-start',}]} >
+
+   
    
         <TouchableOpacity style={styles.avatar}>
         { imageUrl !== '' ?  <Image style={styles.avatarImg} source={{uri: imageUrl}} resizeMode="cover"  /> : null}
@@ -62,14 +70,25 @@ export default function TextBox({userName, user_id, text, date, avatar, messageI
                 
 
            
-        }}   style={user_id === messageId  ? styles.SendTextBox : styles.ReceivedTextBox} >
-            <Text style={[styles.userName, {color: user_id === messageId  ? COLORS.background.white : COLORS.background.black}]}>{userName}</Text>
+        }}  
+        
+        style={user_id === messageId  ? styles.SendTextBox : styles.ReceivedTextBox} >
+            { Generating == false? <>
+                      <Text style={[styles.userName, {color: user_id === messageId  ? COLORS.background.white : COLORS.background.black}]}>{userName}</Text>
 
             
-            <Text style={[styles.Text, {color: user_id === messageId  ? COLORS.background.white : COLORS.background.black}]}>{text}</Text>
-         
-
-            <Text style={[styles.date, {color: user_id === messageId  ? COLORS.background.white : COLORS.background.black}]}>{`${moment(MessageDate).fromNow()}`}</Text>
+                      <Text style={[styles.Text, {color: user_id === messageId  ? COLORS.background.white : COLORS.background.black}]}>{text}</Text>
+                      
+                   
+          
+                      <Text style={[styles.date, {color: user_id === messageId  ? COLORS.background.white : COLORS.background.black}]}>{`${moment(MessageDate).fromNow()}`}</Text>
+                      </> : <>
+                      <View>
+                      <Image source={{uri: 'https://thumbs.gfycat.com/GrippingReflectingBasenji-max-1mb.gif'}} style={{height: 40, width: 90 }} />
+                      </View>
+                      </>
+            }
+          
             
                     
                 
@@ -81,7 +100,13 @@ export default function TextBox({userName, user_id, text, date, avatar, messageI
 
         </View>
 
-       
+       { Generating == false? <View>
+
+       {user_id !== messageId? <TouchableOpacity onPress={copyToClipboard} style={styles.CopyView}>
+    <Icon name={'copy'} size={18} color={COLORS.blue} />
+        { copied == true? <Text style={styles.CopiedText}>Copied!</Text>  : <View />}
+    </TouchableOpacity> : <View /> }
+    </View> : <View /> }
         
     </>
 }
@@ -169,5 +194,29 @@ const styles = StyleSheet.create({
         borderWidth: 1,
        zIndex: -1,
         
+    },
+
+    CopyView: {
+        marginHorizontal: 10,
+        marginVertical: 5,
+        minWidth: 20 ,
+     
+     
+        minHeight: 20,
+       backgroundColor: COLORS.TextBoxGray,
+        borderRadius: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        alignSelf: 'flex-start',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 10
+    
+    },
+    CopiedText: {
+        fontSize: 13,
+        color: COLORS.background.black,
+        marginHorizontal: 5
     }
 })

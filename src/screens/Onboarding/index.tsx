@@ -8,7 +8,7 @@ import ImagesFlatlist from "./imagesFlatlist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Onboarding() {
-/*
+
     const CheckOnboarding = async () => {
         try {
          await AsyncStorage.setItem('@viewedOnboarding', 'true')    
@@ -16,7 +16,7 @@ export default function Onboarding() {
             console.log('Error @setItem:', err)
         } 
       }
-    */
+    
 
     const customanimation = {
         duration: 1000,
@@ -42,8 +42,9 @@ export default function Onboarding() {
 
        </View>
        <TouchableOpacity style={styles.button} onPress={() => {
+        CheckOnboarding()
         navigation.navigate('Home')
-      
+        
        }}>
             <Text style={styles.buttonText}>Start</Text>
     </TouchableOpacity>

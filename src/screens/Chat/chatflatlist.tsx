@@ -14,7 +14,7 @@ type MessagesProps = {
   };
 
 export default function ChatFlatlist(this: any, {nameUrl, imageUrl, type, FirstPrompt} : MessagesProps,) {
-console.log(type, FirstPrompt)
+
     
     const id_user = '1000'
 
@@ -25,7 +25,21 @@ text: FirstPrompt,
 date: '2023, 3, 15',
 avatar: 'https://i.imgur.com/RhCmcHE.png',
 messageId: id_user,
-id: '1000'
+id: '1000',
+generate: false,
+
+},
+
+{
+       
+    user_id: '9090',
+userName: nameUrl,
+    text: `genetating... }`,
+date: '2023, 3, 15',
+avatar: imageUrl,
+messageId: '1000',
+id: '90909090909',
+generate: true,
 
 },])
 
@@ -47,16 +61,18 @@ id: '1000'
         setMessages([{
             user_id: '10100', 
             userName: nameUrl,
-            text: `Olá, meu nome é ${nameUrl}! Estou aqui para ajudar com qualquer dúvida que você possa ter. Estou pronto para começar!`,
+            text: `Hi there! I'm ${nameUrl}. I'm here to help you with any questions you may have. Feel free to ask me anything!`,
             date: '2023, 3, 15',
             avatar: imageUrl,
             messageId: '1000',
-            id: '909090909090'
+            id: '909090909090',
+            generate: false,
         }])
     } else {
         const getOpenAiResponse = async () => {
             const resultado = await Api({prompt: FirstPrompt})
             const Text = resultado.choices[0].text
+            setMessages((prev: any) => (prev.slice(0, -1))); 
             setMessages(
                 (prev: any) => [...prev,
                 {
@@ -67,7 +83,8 @@ id: '1000'
                 date: '2023, 3, 15',
                 avatar: imageUrl,
                 messageId: '1000',
-                id: '909090909090'
+                id: '909090909090',
+                generate: false,
             
             }, ])
 
@@ -84,8 +101,8 @@ id: '1000'
     extraData={messages}
    ref={flatlistRef}
  
-    renderItem={({ item }) => <TextBox user_id={item.user_id} userName={item.userName} text={item.text} date={item.date} avatar={item.avatar} messageId={item.messageId} id={item.id} />} 
-    keyExtractor={({ user_id, id}) => user_id  + id }
+    renderItem={({ item }) => <TextBox user_id={item.user_id} userName={item.userName} text={item.text} date={item.date} avatar={item.avatar} messageId={item.messageId} id={item.id} generating={item.generate} />} 
+    keyExtractor={({ user_id, id, text}) => user_id  + id + text }
     
     horizontal={false}
     

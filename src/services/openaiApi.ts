@@ -1,8 +1,9 @@
 
 import { Configuration, OpenAIApi } from "openai";
+import devEnvironmentVariables from "./env";
 const configuration = new Configuration({
     organization: "org-2uiYiQfNuciBGNdKVMPeduk7",
-    apiKey: "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"
+    apiKey: devEnvironmentVariables.DEV_BACKEND_URL
 });
 const openai = new OpenAIApi(configuration);
 
@@ -19,7 +20,7 @@ export  async function Api({prompt} : props ) {
         max_tokens: 2048,
         temperature: 0,
     })
-    console.log(response.data)
+   
     return response.data;
 
 }

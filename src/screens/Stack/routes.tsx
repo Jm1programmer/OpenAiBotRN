@@ -15,7 +15,7 @@ export default  function Routes() {
 
   const [viewedOnboarding, setViewedOnboarding] = useState<boolean>(false)
 
- /* const checkOnboarding = async () => {
+  const checkOnboarding = async () => {
     try {
       const value = await AsyncStorage.getItem('@viewedOnboarding')
 
@@ -35,7 +35,7 @@ export default  function Routes() {
   useEffect(() => {
       checkOnboarding()
   }, [])
-*/
+
 
 return (
   <>

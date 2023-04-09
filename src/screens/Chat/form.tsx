@@ -7,7 +7,7 @@ import * as yup from "yup";
 import { Controller, useForm  } from "react-hook-form";
 import { Api } from "../../services/openaiApi";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const schema = yup.object({
    
@@ -44,63 +44,96 @@ export default function Form({flatlistRef, nameUrl, idUrl, Messages, id_user, Se
 })
 
 
-function handleSignIn(data: Data) {
+async function handleSignIn(data: Data) {
     
         const prompt = data.TextBox
-
-    let guid = () => {
-        let s4 = () => {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
+        
+        let guid = () => {
+            let s4 = () => {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                    .toString(16)
+                    .substring(1);
+            }
+            //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
         }
-        //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    }
+        const id = guid();
+
+    
+        
+        SetMessages(
+            (prev: any) => [...prev,
+             {
+            user_id: id_user,
+        userName: 'User',
+        text: prompt.trim(),
+        date: '2023, 3, 15',
+        avatar: 'https://i.imgur.com/RhCmcHE.png',
+        messageId: id_user,
+        id: id,
+        generate: false,
+             },
+
+        {
+       
+            user_id: '9090',
+        userName: nameUrl,
+            text: `genetating... ${prompt + id}`,
+        date: '2023, 3, 15',
+        avatar: ImageUrl,
+        messageId: '1000',
+        id: id,
+        generate: true,
+        
+        },
+        
+        
+        ])
+
+   
     setPlaceHolder('Generating...')
     const getOpenAiResponse = async () => {
       
         resetField('TextBox')
         setInputGenerating(false)
         const resultado = await Api({prompt: prompt})
-        const Text = resultado.choices[0].text
+        const Text = resultado.choices[0].text as string
       
-        
+        const HistoryData = {
+            prompt: prompt.trim(),
+            response: Text,
+            time: new Date()
+            
+        }
+        const HistoryValue = JSON.stringify(HistoryData)
+  
+        await AsyncStorage.setItem(id, HistoryValue)
 
-        const id = guid();
-        
-       
-       
+      
+        SetMessages((prev: any) => (prev.slice(0, -1))); 
      SetMessages(
         (prev: any) => [...prev,
-         {
-        user_id: id_user,
-    userName: 'User',
-    text: prompt,
-    date: '2023, 3, 15',
-    avatar: 'https://i.imgur.com/RhCmcHE.png',
-    messageId: id_user,
-    id: id
-    
-    },{
+     {
        
         user_id: '9090',
     userName: nameUrl,
-   text: Text,
+   text: Text.trimStart(), 
     date: '2023, 3, 15',
     avatar: ImageUrl,
     messageId: '1000',
-    id: id
+    id: id,
+    generate: false,
     
     }, ])
    
-   
-
-    
+       
+ 
     setPlaceHolder('Send Message')
     setInputGenerating(true)
     
     }
+
+
     
     getOpenAiResponse()
   
@@ -179,7 +212,7 @@ const styles = StyleSheet.create({
         width: '95%',
        
         flexDirection: 'row',
-        minHeight: height / 16,
+        minHeight: 50,
         maxHeight: height / 14,
        
         marginVertical: 15,
