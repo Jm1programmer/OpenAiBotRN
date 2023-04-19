@@ -10,6 +10,7 @@ export const COLORS  =  {
     lowOpacityWhite: 'rgba(255,255,255,0.4)',
     reallylowOpacityWhite: 'rgba(255,255,255,0.2)',
     TextBoxGray: '#E1E1E1',
-    green: '#64A768'
+    green: '#64A768',
+    red: '#ff0000',
 
   }

@@ -4,6 +4,9 @@ import { FlatList, Dimensions, Image} from "react-native";
 import TextBox from "./textbox";
 import Form from "./form";
 import { Api } from "../../services/openaiApi";
+import ApiKeyGet from "../../services/getApiKey";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import IdGenerator from "./idGenerator";
 
 type MessagesProps = {
     nameUrl: string,
@@ -70,7 +73,10 @@ generate: true,
         }])
     } else {
         const getOpenAiResponse = async () => {
-            const resultado = await Api({prompt: FirstPrompt})
+            const KeyApi = await ApiKeyGet()
+
+        
+            const resultado = await Api({prompt: FirstPrompt, key: KeyApi })
             const Text = resultado.choices[0].text
             setMessages((prev: any) => (prev.slice(0, -1))); 
             setMessages(
@@ -87,6 +93,18 @@ generate: true,
                 generate: false,
             
             }, ])
+            const HistoryData = {
+                prompt: FirstPrompt.trim(),
+                response: Text,
+                time: new Date()
+                
+            }
+
+
+            const HistoryValue = JSON.stringify(HistoryData)
+            const id = IdGenerator();
+      
+            await AsyncStorage.setItem(id, HistoryValue)
 
         }
            

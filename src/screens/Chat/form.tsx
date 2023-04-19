@@ -8,6 +8,9 @@ import { Controller, useForm  } from "react-hook-form";
 import { Api } from "../../services/openaiApi";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ApiKeyGet from "../../services/getApiKey";
+import IdGenerator from "./idGenerator";
+
 
 const schema = yup.object({
    
@@ -48,16 +51,8 @@ async function handleSignIn(data: Data) {
     
         const prompt = data.TextBox
         
-        let guid = () => {
-            let s4 = () => {
-                return Math.floor((1 + Math.random()) * 0x10000)
-                    .toString(16)
-                    .substring(1);
-            }
-            //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        }
-        const id = guid();
+       
+        const id = IdGenerator();
 
     
         
@@ -93,10 +88,15 @@ async function handleSignIn(data: Data) {
    
     setPlaceHolder('Generating...')
     const getOpenAiResponse = async () => {
-      
+
+       
         resetField('TextBox')
         setInputGenerating(false)
-        const resultado = await Api({prompt: prompt})
+
+        const KeyApi = await ApiKeyGet()
+
+        
+        const resultado = await Api({prompt: prompt, key: KeyApi })
         const Text = resultado.choices[0].text as string
       
         const HistoryData = {

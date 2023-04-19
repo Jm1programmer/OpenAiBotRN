@@ -30,7 +30,7 @@ export default function TextBox({userName, user_id, text, date, avatar, messageI
     const [copied, setCopied] = useState<boolean>(false)
     const [Generating, setGenerating] = useState<boolean>(generating)
 
- 
+    const LoadingAnimation = require('../../../assets/Loading.gif')
 
   
     useEffect(() => {
@@ -47,7 +47,7 @@ export default function TextBox({userName, user_id, text, date, avatar, messageI
         Clipboard.setString(text);
         setCopied(true)
       };
- //  <Image source={{uri: 'https://thumbs.gfycat.com/GrippingReflectingBasenji-max-1mb.gif'}} style={{height: 30}} />
+
 
     return <>
 
@@ -84,7 +84,7 @@ export default function TextBox({userName, user_id, text, date, avatar, messageI
                       <Text style={[styles.date, {color: user_id === messageId  ? COLORS.background.white : COLORS.background.black}]}>{`${moment(MessageDate).fromNow()}`}</Text>
                       </> : <>
                       <View>
-                      <Image source={{uri: 'https://thumbs.gfycat.com/GrippingReflectingBasenji-max-1mb.gif'}} style={{height: 40, width: 90 }} />
+                      <Image source={LoadingAnimation} style={{height: 40, width: 90 }} />
                       </View>
                       </>
             }

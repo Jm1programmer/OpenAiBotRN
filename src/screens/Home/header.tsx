@@ -6,17 +6,27 @@ import { useNavigation } from "@react-navigation/native";
 import { propsStack } from "../Stack/models";
 import { useState } from "react";
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import AIcon from 'react-native-vector-icons/AntDesign'
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../../contexts/Auth";
 
 type MessagesProps = {
     nameUrl: string,
     imageUrl:string,
+
     
   };
-export default function Header({nameUrl, imageUrl} : MessagesProps) {
+export default function Header({nameUrl, imageUrl, } : MessagesProps) {
+
+    const {signOut} = useAuth()
+
     const navigation = useNavigation<propsStack>()
     const [usersArray, setUsersArray] = useState()
-
- 
+    const [perfilOptions, setPerfilOptions] = useState<boolean>(false)
+     
+    const changeApi = async () => {
+       signOut()
+    }
              
                 
               
@@ -26,7 +36,7 @@ export default function Header({nameUrl, imageUrl} : MessagesProps) {
       
     
     <TouchableOpacity style={styles.ContactBox} onPress={() => {
-        
+        setPerfilOptions(!perfilOptions)
     }}>
         <View style={styles.profilePictureView}>
         <Image style={styles.profilePicture} source={{uri: imageUrl}} resizeMode="cover" />
@@ -41,7 +51,14 @@ export default function Header({nameUrl, imageUrl} : MessagesProps) {
         </View>
         </TouchableOpacity>
 
-      
+      { perfilOptions?  <View style={styles.PerfilOptionsTab}>
+        <TouchableOpacity style={styles.PerfilOptionTabButton} onPress={() => {
+          changeApi()
+        }}>
+        <AIcon  name={'logout'} size={20} color={COLORS.background.black} />
+        <Text style={styles.PerfilOptionTabText}>Change API Key</Text>
+        </TouchableOpacity>
+     </View> : null }
 
     
 
@@ -106,6 +123,32 @@ const styles = StyleSheet.create({
         marginHorizontal: 2,
         color: COLORS.background.black,
         fontSize: 16,
+    },
+
+    PerfilOptionsTab: {
+      minWidth: 100,
+        minheight: 1,
+        backgroundColor: COLORS.background.white,
+        position: 'absolute',
+        padding: 10,
+        marginHorizontal: 20,
+        borderRadius: 5,
+        alignSelf: 'flex-end',
+        borderColor: COLORS.TextBoxGray,
+        borderWidth: 1,
+        zIndex: 2, // works on ios
+      
+    },
+
+    PerfilOptionTabButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    PerfilOptionTabText: {
+        fontSize: 15,
+     
+         marginHorizontal: 10,
     }
     
 })

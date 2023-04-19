@@ -18,18 +18,15 @@ export default function NewChat() {
 
     const clearAppData = async function() {
 
-      const CheckOnboarding = async () => {
-        try {
-         await AsyncStorage.setItem('@viewedOnboarding', 'true')    
-        } catch (err) {
-            console.log('Error @setItem:', err)
-        } 
-      }
+
+    
 
       try {
           const keys = await AsyncStorage.getAllKeys();
-          await AsyncStorage.multiRemove(keys);
-          CheckOnboarding()
+          const Keys = keys.filter(e => e !== '@ApiKey' && e !=='@viewedOnboarding')
+          await AsyncStorage.multiRemove(Keys);
+          
+         
           ShowHistory()
       } catch (error) {
           console.error('Error clearing app data.');
@@ -74,16 +71,11 @@ export default function NewChat() {
 
     <View style={styles.ChatTextInfo} >
       <Text style={styles.Text}>Chat History</Text>
-      <TouchableOpacity onPress={() => {
-     
-       
-      }}>
-          <Text style={[styles.Text, {color: COLORS.blue}]}>Show All</Text>
-      </TouchableOpacity>
+      
 
     </View>
-
-      { History.length > 1?
+    
+      { History.length > 2?
       <>
 <FlatList style={{
   flexGrow: 1, height: 200}}
@@ -92,7 +84,7 @@ export default function NewChat() {
     renderItem={({ item }) => 
   
     ( 
-       item[0] == (undefined) ? null : item[0] == '@viewedOnboarding' ? null : <CartH data={JSON.parse(item[1])}text={item[1]} icon={'chatbox-ellipses-outline'} type={'prompt'} prompt={item[1]} id={item[0]} /> 
+       item[0] == (undefined) ? null : item[0] == '@viewedOnboarding'  ? null : item[0] == '@ApiKey' ? null : <CartH data={JSON.parse(item[1])}text={item[1]} icon={'chatbox-ellipses-outline'} type={'prompt'} prompt={item[1]} id={item[0]} /> 
         
       )
       
@@ -131,7 +123,7 @@ export default function NewChat() {
 
 const styles = StyleSheet.create({
     
-  ChatTextInfo: {
+  ChatTextInfo: {  
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
