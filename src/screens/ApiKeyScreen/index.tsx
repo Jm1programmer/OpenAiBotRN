@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, View, FlatList, Image, StyleSheet, TouchableOpacity, LayoutAnimation } from "react-native";
+import { Text, View, FlatList, Image, StyleSheet, TouchableOpacity, LayoutAnimation, KeyboardAvoidingView, Platform } from "react-native";
 import { Bots } from "../../BotConfigs";
 import { COLORS } from "../../colors";
 import { propsStack } from "../Stack/models";
@@ -17,7 +17,10 @@ export default function ApiKeyScreen() {
 
     const navigation = useNavigation<propsStack>()
     return <>
-    <View style={styles.Screen}>
+
+<KeyboardAvoidingView style={styles.Screen}
+behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    
      
         <Image source={ImageKey} resizeMode={'contain'} style={{width: 320, height: 400, }}/> 
        <Text style={styles.Title}>{`Generate a API Key!` }</Text>
@@ -25,7 +28,9 @@ export default function ApiKeyScreen() {
 
         <KeyForm/>
 
-       </View>
+       </KeyboardAvoidingView>
+
+   
       
        
     </>
@@ -35,7 +40,8 @@ const styles = StyleSheet.create({
     Screen: {
         flex: 1,
         backgroundColor: COLORS.background.white, 
-      
+        alignItems: 'center',
+        justifyContent: 'center',
       padding: 30,
     },
     Title: {

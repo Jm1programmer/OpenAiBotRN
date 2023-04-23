@@ -105,7 +105,9 @@ const styles = StyleSheet.create({
     },
     name: {
         fontSize: 17,
-        fontWeight: '500'
+        fontWeight: '500',
+        fontFamily: 'Montserrat-SemiBold', 
+        color:  COLORS.background.black
   
     },
     InfoTextView: {
@@ -115,7 +117,8 @@ const styles = StyleSheet.create({
     InfoText: {
         fontSize: 15,
         color: COLORS.gray,
-        fontWeight: '400'
+        fontWeight: '400',
+      
        
     },
     InfoTextBold: {

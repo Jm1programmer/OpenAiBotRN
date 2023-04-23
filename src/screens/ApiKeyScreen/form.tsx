@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { Controller, useForm  } from "react-hook-form";
-import { View, TextInput, TouchableOpacity, StyleSheet, Dimensions, Text } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Dimensions, Text, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo'
 import { COLORS } from '../../colors';
 import { useState } from 'react';
@@ -31,12 +31,12 @@ const schema = yup.object({
 
 const [HideText, setHideText] = useState<boolean>(true)
 const [buttonState, setButtonState] = useState<boolean>(true)
-const [ApiKeyState, setApiKeyState] = useState<boolean | undefined>(undefined) 
+const [ApiKeyState, setApiKeyState] = useState<boolean | undefined | string>(undefined) 
 const navigation = useNavigation<propsStack>()
 const {signIN} = useAuth()
 
 async function handleSignIn(data: Data) {
-
+setApiKeyState('Loading')
   //AsyncStorage.setItem('@ApiKey', data.ApiKey)
   //navigation.navigate('Home')
   const resultado = await Api({prompt: 'Hi', key: data.ApiKey})
@@ -111,7 +111,7 @@ return <>
 
 </View>
 
-{ ApiKeyState == undefined? null :
+{ ApiKeyState == undefined? null : ApiKeyState=== 'Loading'? <View style={styles.box}><ActivityIndicator size={'large'}/></View> :
 //ApiKeyState? `Its all correct` : `Your API key is invalid \n try again`
 <View style={[styles.box, {backgroundColor: ApiKeyState? COLORS.green : COLORS.red}]}>
             <Text style={{textAlign: 'center', color: COLORS.background.white, fontSize: 15, }}>{ApiKeyState == null? `Your API key is invalid \n try again` :`Its all correct`}</Text>
@@ -213,7 +213,7 @@ const height = Dimensions.get('window').height;
   box: {
       width: '100%',
       minHeight: 40,
-      backgroundColor: COLORS.green,
+  
       marginBottom: 10,
       borderRadius: 5,
       justifyContent: 'center'

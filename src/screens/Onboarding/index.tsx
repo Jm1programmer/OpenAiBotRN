@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
        textAlign: 'center',
        alignSelf: 'center',
         width: '90%',
-        marginTop: 10
+        margin: 10
     },
     button: {
         width: '90%',

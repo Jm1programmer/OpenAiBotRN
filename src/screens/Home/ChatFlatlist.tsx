@@ -127,7 +127,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 2
+    paddingHorizontal: 2, 
+    fontFamily: 'Montserrat-regular'
   },
 
    Text: {
