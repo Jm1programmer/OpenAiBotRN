@@ -37,8 +37,8 @@ Development of an Intelligent Bot using React Native and Open AI to provide inte
 </p>
 
 <h1 align="center" >
-    <img src="https://github.com/Jm1programmer/OpenAiBotRN/blob/079e9e82df8675cd0e0bc16ad63a63311e7abe9f/ReadmeGif.gif" alt="FoodPass"  height="545"  >
- 
+    <img src="https://github.com/Jm1programmer/OpenAiBotRN/assets/89549484/a0fc3c9f-953e-4a11-8889-841ded03bb83" alt="FoodPass"  height="545"  >
+
 
 
 
